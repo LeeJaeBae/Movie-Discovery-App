@@ -11,11 +11,21 @@ export default class extends React.Component {
     error: null
   };
 
-  handleSubmit = () => {
+  handleSubmit = event => {
+    event.preventDefault();
     const { searchTerm } = this.state;
     if (searchTerm !== "") {
       this.searchByTerm();
     }
+  };
+
+  updateTerm = event => {
+    const {
+      target: { value }
+    } = event;
+    this.setState({
+      searchTerm: value
+    });
   };
 
   searchByTerm = async () => {
@@ -29,7 +39,6 @@ export default class extends React.Component {
         data: { results: tvResults }
       } = await tvApi.search(searchTerm);
       this.setState({ movieResults, tvResults });
-      console.log(tvApi.search(searchTerm));
     } catch {
       this.setState({ error: "Can't find results." });
     } finally {
@@ -38,17 +47,17 @@ export default class extends React.Component {
   };
 
   render() {
-    const { state } = this;
-    const { movieResult, tvResult, searchTerm, loading, error } = this.state;
-    console.log(state);
+    const { movieResults, tvResults, searchTerm, loading, error } = this.state;
+    console.log(movieResults, tvResults);
     return (
       <SearchPresenter
-        movieResult={movieResult}
-        tvResult={tvResult}
+        movieResults={movieResults}
+        tvResults={tvResults}
         loading={loading}
         error={error}
         searchTerm={searchTerm}
         handleSubmit={this.handleSubmit}
+        updateTerm={this.updateTerm}
       />
     );
   }

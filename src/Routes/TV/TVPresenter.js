@@ -2,10 +2,43 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const TvPresenter = ({ topRated, popular, airingToday, loading, error }) =>
-  null;
+import Section from "Components/Section";
+import Loader from "../../Components/Loader";
 
-TvPresenter.PropTypes = {
+const Container = styled.div`
+  padding: 0px 20px;
+`;
+
+const TvPresenter = ({ topRated, popular, airingToday, loading, error }) =>
+  loading ? (
+    <Loader />
+  ) : (
+    <Container>
+      {topRated && topRated.length > 0 && (
+        <Section title="Top-Rated Shows">
+          {topRated.map(show => (
+            <span id={show.id}>{show.name}</span>
+          ))}
+        </Section>
+      )}
+      {popular && popular.length > 0 && (
+        <Section title="Popular Shows">
+          {popular.map(show => (
+            <span id={show.id}>{show.name}</span>
+          ))}
+        </Section>
+      )}
+      {airingToday && airingToday.length > 0 && (
+        <Section title="Airing Today">
+          {airingToday.map(show => (
+            <span id={show.id}>{show.name}</span>
+          ))}
+        </Section>
+      )}
+    </Container>
+  );
+
+TvPresenter.propTypes = {
   topRated: PropTypes.array,
   popular: PropTypes.array,
   airingToday: PropTypes.array,
