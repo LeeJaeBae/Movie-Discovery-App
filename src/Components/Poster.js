@@ -17,11 +17,22 @@ const Image = styled.div`
 `;
 
 const Rating = styled.span`
-  bottom: 5px;
-  right: 5px;
   position: absolute;
   opacity: 0;
   transition: opacity 0.1s linear;
+  left: 50%;
+  bottom: 5%;
+  transform: translateX(-50%);
+  font-size: 5px;
+`;
+
+const Synopsis = styled.span`
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  opacity: 0;
+  transition: opacity 0.1s linear;
+  font-size: 9px;
 `;
 
 const ImageContainer = styled.div`
@@ -29,9 +40,12 @@ const ImageContainer = styled.div`
   position: relative;
   &:hover {
     ${Image} {
-      opacity: 0.3;
+      opacity: 0.1;
     }
     ${Rating} {
+      opacity: 1;
+    }
+    ${Synopsis} {
       opacity: 1;
     }
   }
@@ -47,7 +61,14 @@ const Year = styled.span`
   color: rgba(255, 255, 255, 0.5);
 `;
 
-const RatingStar = rating => {
+const RatingStar = styled.span`
+  left: 50%;
+  transform: translateX(-50%);
+  color: yellow;
+  font-size: 17px;
+`;
+
+const ratingStar = rating => {
   let Rating = parseInt(rating);
   if (Rating === 10) {
     return "★★★★★";
@@ -74,7 +95,15 @@ const RatingStar = rating => {
   }
 };
 
-const Poster = ({ id, imageUrl, title, rating, year, isMovie = false }) => (
+const Poster = ({
+  id,
+  imageUrl,
+  title,
+  rating,
+  year,
+  isMovie = false,
+  synopsis
+}) => (
   <Link to={isMovie ? `/movie/${id}` : `/show/${id}`}>
     <Container>
       <ImageContainer>
@@ -86,11 +115,14 @@ const Poster = ({ id, imageUrl, title, rating, year, isMovie = false }) => (
           }
         />
         <Rating>
+          <RatingStar>{ratingStar(rating)}</RatingStar>
           {rating}/10
-          <span role="img" aria-label="rating">
-            <span>{RatingStar(rating)}</span>
-          </span>
         </Rating>
+        <Synopsis>
+          {synopsis.length > 100
+            ? `${synopsis.substring(0, 100)}...`
+            : synopsis}
+        </Synopsis>
       </ImageContainer>
       <Title>
         {title.length > 18 ? `${title.substring(0, 18)}...` : title}
@@ -106,7 +138,8 @@ Poster.propTypes = {
   title: PropTypes.string.isRequired,
   rating: PropTypes.number,
   year: PropTypes.string,
-  isMovie: PropTypes.bool
+  isMovie: PropTypes.bool,
+  synopsis: PropTypes.string
 };
 
 export default Poster;

@@ -39,6 +39,7 @@ export default class extends React.Component {
         data: { results: tvResults }
       } = await tvApi.search(searchTerm);
       this.setState({ movieResults, tvResults });
+      console.log(movieResults, tvResults);
     } catch {
       this.setState({ error: "Can't find results." });
     } finally {
