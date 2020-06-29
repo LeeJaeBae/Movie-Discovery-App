@@ -17,6 +17,7 @@ export default class extends React.Component {
   }
 
   async componentDidMount() {
+    console.log(this);
     const {
       match: {
         params: { id }
